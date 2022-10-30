@@ -25,7 +25,7 @@ namespace DSPAlgorithms.Algorithms
             {
                 for (int i = 0; i <SamplingFrequency; i++)
                 {
-                    oo =(float)Math.Round((float)( A *( Math.Sin((2 * Math.PI*(AnalogFrequency/SamplingFrequency)*i)+PhaseShift))),6);
+                    oo =((float)( A *( Math.Sin((2 * Math.PI*(AnalogFrequency/SamplingFrequency)*i)+PhaseShift))));
                     samples.Add(oo);
 
                 }
@@ -35,7 +35,7 @@ namespace DSPAlgorithms.Algorithms
             {
                 for (int i = 0; i < SamplingFrequency; i++)
                 {
-                    oo = (float)Math.Round((float)(A * (Math.Cos((2 * Math.PI * (AnalogFrequency / SamplingFrequency) * i) + PhaseShift))), 6);
+                    oo = ((float)(A * (Math.Cos((2 * Math.PI * (AnalogFrequency / SamplingFrequency) * i) + PhaseShift))));
                     samples.Add(oo);
 
                 }
