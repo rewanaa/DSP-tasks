@@ -24,6 +24,7 @@ namespace DSPAlgorithms.Algorithms
 
         public override void Run()
         {
+
             quan_signal = new List<float>();
             midpoint = new List<float>();
             End = new List<float>();
@@ -43,33 +44,41 @@ namespace DSPAlgorithms.Algorithms
             }
 
             delta = ((InputSignal.Samples.Max()) - ((InputSignal.Samples.Min()))) / InputLevel;
-            End.Add((InputSignal.Samples.Min()));
-            while((InputSignal.Samples.Min()<= (InputSignal.Samples.Max()))){
-                End.Add(delta + (InputSignal.Samples.Min()));
-                min = min + delta;
+            for (int i = 0; i < InputLevel + 1; i++)
+            {
+                End.Add(delta * i + (InputSignal.Samples.Min()));
             }
 
-           for(int i=0; i < InputLevel; i++)
+            for (int i = 0; i < InputLevel; i++)
             {
                 midpoints = (End[i] + End[i + 1]) / 2;
                 midpoint.Add(midpoints);
             }
 
-
-           for(int i = 0; i < InputSignal.Samples.Count; i++)
+            for (int i = 0; i < InputSignal.Samples.Count; i++)
             {
-                for(int j=0; j < End.Count; j++)
+                bool flag = false;
+                for (int j = 0; j < midpoint.Count; j++)
                 {
-                    if (InputSignal.Samples[i] >= End[j] && InputSignal.Samples[i] <= End[j + 1])
+                    if (InputSignal.Samples[i] >= midpoint[j] - (delta / 2) && InputSignal.Samples[i] < midpoint[j] + (delta / 2))
                     {
                         quan_signal.Add(midpoint[j]);
                         OutputEncodedSignal.Add(Convert.ToString(j, 2).PadLeft(InputNumBits, '0'));
                         OutputIntervalIndices.Add(j + 1);
+                        flag = true;
+                        break;
                     }
+                }
+                if (!flag)
+                {
+                    OutputEncodedSignal.Add(Convert.ToString(3, 2).PadLeft(InputNumBits, '0'));
+                    quan_signal.Add(midpoint[midpoint.Count - 1]);
+                    OutputIntervalIndices.Add(midpoint.Count);
+
                 }
             }
             OutputQuantizedSignal = new Signal(quan_signal, false);
-            for(int i=0; i < InputSignal.Samples.Count; i++)
+            for (int i = 0; i < InputSignal.Samples.Count; i++)
             {
                 float error = quan_signal[i] - InputSignal.Samples[i];
                 OutputSamplesError.Add(error);
