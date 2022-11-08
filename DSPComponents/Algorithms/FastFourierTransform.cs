@@ -15,7 +15,32 @@ namespace DSPAlgorithms.Algorithms
 
         public override void Run()
         {
-            throw new NotImplementedException();
+            List<float> PhaseShift = new List<float>();
+            List<float> amplitude = new List<float>();
+            
+            for (int k = 0; k < InputTimeDomainSignal.Samples.Count; k++)
+            {
+                float imagin = 0.0f;
+                float real = 0.0f;
+                for (int n = 0; n < InputTimeDomainSignal.Samples.Count; n++)
+                {
+
+                    Double e = (k * 2 * Math.PI * n) / InputTimeDomainSignal.Samples.Count;
+
+                    real += InputTimeDomainSignal.Samples[n] * (float)Math.Cos(e);
+                    imagin += -InputTimeDomainSignal.Samples[n] * (float)Math.Sin(e);
+                    
+                }
+
+                amplitude.Add((float)Math.Sqrt((Math.Pow(real , 2)) + (Math.Pow(imagin, 2))));
+                PhaseShift.Add((float)Math.Atan2(imagin, real)); 
+                OutputFreqDomainSignal = new Signal(InputTimeDomainSignal.Samples, false);
+                OutputFreqDomainSignal = new Signal(amplitude, false);
+                OutputFreqDomainSignal = new Signal(PhaseShift, false);
+                OutputFreqDomainSignal.FrequenciesAmplitudes = amplitude;
+                OutputFreqDomainSignal.FrequenciesPhaseShifts = PhaseShift;
+                
+            }
         }
     }
 }

@@ -6,7 +6,7 @@ C:\Users\kh\Downloads\fcisdsp-dsp.toolbox-78ddd969882b\fcisdsp-dsp.toolbox-78ddd
 C:\Users\kh\Downloads\fcisdsp-dsp.toolbox-78ddd969882b\fcisdsp-dsp.toolbox-78ddd969882b\DSPToolbox\DSPComponents\obj\Debug\DSPComponents.pdb
 C:\Users\kh\projects\my_github\DSP-tasks\DSPComponents\bin\Debug\DSPComponents.dll
 C:\Users\kh\projects\my_github\DSP-tasks\DSPComponents\bin\Debug\DSPComponents.pdb
-C:\Users\kh\projects\my_github\DSP-tasks\DSPComponents\obj\Debug\DSPAlgorithms.csproj.AssemblyReference.cache
 C:\Users\kh\projects\my_github\DSP-tasks\DSPComponents\obj\Debug\DSPAlgorithms.csproj.CoreCompileInputs.cache
 C:\Users\kh\projects\my_github\DSP-tasks\DSPComponents\obj\Debug\DSPComponents.dll
 C:\Users\kh\projects\my_github\DSP-tasks\DSPComponents\obj\Debug\DSPComponents.pdb
+C:\Users\kh\projects\my_github\DSP-tasks\DSPComponents\obj\Debug\DSPAlgorithms.csprojAssemblyReference.cache
