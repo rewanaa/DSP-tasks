@@ -14,7 +14,29 @@ namespace DSPAlgorithms.Algorithms
 
         public override void Run()
         {
-            throw new NotImplementedException();
+            List<float> sample = new List<float>();
+            for (int i = 0; i < InputFreqDomainSignal.Frequencies.Count; i++)
+            {
+                Console.WriteLine(InputFreqDomainSignal.FrequenciesAmplitudes[i] + " freq " + InputFreqDomainSignal.FrequenciesPhaseShifts[i]);
+            }
+            Console.WriteLine();
+            for (int k = 0; k < InputFreqDomainSignal.Frequencies.Count; k++)
+            {
+                float real = 0.0f;
+                for (int n = 0; n < InputFreqDomainSignal.Frequencies.Count; n++)
+                {
+                    Double e = (k * 2 * Math.PI * n) / InputFreqDomainSignal.FrequenciesAmplitudes.Count;
+                    real += InputFreqDomainSignal.FrequenciesAmplitudes[n] * (float)Math.Cos(e + InputFreqDomainSignal.FrequenciesPhaseShifts[n]);
+                    //                    Console.Write(real + " ");
+                }
+                Console.Write(real + " ");
+                real = real / InputFreqDomainSignal.Frequencies.Count;
+                Console.WriteLine(real);
+                sample.Add(real);
+                OutputTimeDomainSignal = new Signal(sample, false);
+                OutputTimeDomainSignal.Samples = sample;
+            }
+
         }
     }
 }

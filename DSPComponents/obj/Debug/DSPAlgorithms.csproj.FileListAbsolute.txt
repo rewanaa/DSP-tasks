@@ -9,4 +9,4 @@ C:\Users\kh\projects\my_github\DSP-tasks\DSPComponents\bin\Debug\DSPComponents.p
 C:\Users\kh\projects\my_github\DSP-tasks\DSPComponents\obj\Debug\DSPAlgorithms.csproj.CoreCompileInputs.cache
 C:\Users\kh\projects\my_github\DSP-tasks\DSPComponents\obj\Debug\DSPComponents.dll
 C:\Users\kh\projects\my_github\DSP-tasks\DSPComponents\obj\Debug\DSPComponents.pdb
-C:\Users\kh\projects\my_github\DSP-tasks\DSPComponents\obj\Debug\DSPAlgorithms.csprojAssemblyReference.cache
+C:\Users\kh\projects\my_github\DSP-tasks\DSPComponents\obj\Debug\DSPAlgorithms.csproj.AssemblyReference.cache

@@ -15,7 +15,22 @@ namespace DSPAlgorithms.Algorithms
 
         public override void Run()
         {
-            throw new NotImplementedException();
+            if (ShiftingValue > 0)
+            {
+                for(int i=ShiftingValue;i<InputSignal.Samples.Count;i++)
+                {
+                    InputSignal.Samples[i - ShiftingValue] = InputSignal.Samples[i];
+                }
+            }
+            else if(ShiftingValue < 0)
+            {
+                for (int i = InputSignal.Samples.Count-ShiftingValue-1; i >= 0; i--)
+                {
+                    InputSignal.Samples[i + ShiftingValue] = InputSignal.Samples[i];
+                }
+
+            }
+            OutputShiftedSignal = InputSignal;
         }
     }
 }
