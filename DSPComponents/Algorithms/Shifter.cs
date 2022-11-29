@@ -15,22 +15,24 @@ namespace DSPAlgorithms.Algorithms
 
         public override void Run()
         {
-            if (ShiftingValue > 0)
-            {
-                for(int i=ShiftingValue;i<InputSignal.Samples.Count;i++)
-                {
-                    InputSignal.Samples[i - ShiftingValue] = InputSignal.Samples[i];
-                }
-            }
-            else if(ShiftingValue < 0)
-            {
-                for (int i = InputSignal.Samples.Count-ShiftingValue-1; i >= 0; i--)
-                {
-                    InputSignal.Samples[i + ShiftingValue] = InputSignal.Samples[i];
-                }
+            List<int> indecies = new List<int>();
 
+            if (InputSignal.Periodic)
+            {
+                for (int i = 0; i < InputSignal.Samples.Count; i++)
+                {
+                    indecies.Add(InputSignal.SamplesIndices[i] + ShiftingValue);
+                }
             }
-            OutputShiftedSignal = InputSignal;
+            else
+            {
+                for (int i = 0; i < InputSignal.Samples.Count; i++)
+                {
+                    indecies.Add(InputSignal.SamplesIndices[i] + (ShiftingValue * -1));
+                }
+            }
+
+            OutputShiftedSignal = new Signal(InputSignal.Samples, indecies, InputSignal.Periodic);
         }
     }
 }

@@ -12,18 +12,20 @@ namespace DSPAlgorithms.Algorithms
         public Signal InputSignal { get; set; }
         public Signal OutputFoldedSignal { get; set; }
 
+        public List<float> outputSignal { get; set; }
+        public List<int> index { get; set; }
+
         public override void Run()
         {
-            
-                for (int j = 0; j < InputSignal.Samples.Count/2; j++)
-                {
-                float tmp = InputSignal.Samples[j];
-                InputSignal.Samples[j] = InputSignal.Samples[InputSignal.Samples.Count - j - 1];
-                InputSignal.Samples[InputSignal.Samples.Count - j - 1] = tmp;
-                OutputFoldedSignal.Samples[j] = InputSignal.Samples[j] ;
-                   
-                }
-            
+             outputSignal = new List<float>();
+             index = new List<int>();
+            for (int i = InputSignal.Samples.Count - 1; i >= 0; i--)
+            {
+                outputSignal.Add(InputSignal.Samples[i]);
+                index.Add(InputSignal.SamplesIndices[i] * -1);
+            }
+
+            OutputFoldedSignal = new Signal(outputSignal, index, !InputSignal.Periodic);
         }
     }
 }

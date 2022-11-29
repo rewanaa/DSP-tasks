@@ -102,6 +102,7 @@ C:\Users\kh\projects\my_github\DSP-tasks\DSPUI\bin\Debug\OxyPlot.pdb
 C:\Users\kh\projects\my_github\DSP-tasks\DSPUI\bin\Debug\OxyPlot.xml
 C:\Users\kh\projects\my_github\DSP-tasks\DSPUI\bin\Debug\OxyPlot.WindowsForms.pdb
 C:\Users\kh\projects\my_github\DSP-tasks\DSPUI\bin\Debug\OxyPlot.WindowsForms.xml
+C:\Users\kh\projects\my_github\DSP-tasks\DSPUI\obj\Debug\DSPUI.csproj.AssemblyReference.cache
 C:\Users\kh\projects\my_github\DSP-tasks\DSPUI\obj\Debug\DSPUI.ComponentsAttriutesEditor.DiscreteFourierTransform.resources
 C:\Users\kh\projects\my_github\DSP-tasks\DSPUI\obj\Debug\DSPUI.ComponentsAttriutesEditor.FastFourierTransform.resources
 C:\Users\kh\projects\my_github\DSP-tasks\DSPUI\obj\Debug\DSPUI.ComponentsAttriutesEditor.FileInputSignal.resources
@@ -118,4 +119,3 @@ C:\Users\kh\projects\my_github\DSP-tasks\DSPUI\obj\Debug\DSPUI.csproj.CoreCompil
 C:\Users\kh\projects\my_github\DSP-tasks\DSPUI\obj\Debug\DSPUI.csproj.CopyComplete
 C:\Users\kh\projects\my_github\DSP-tasks\DSPUI\obj\Debug\DSPUI.exe
 C:\Users\kh\projects\my_github\DSP-tasks\DSPUI\obj\Debug\DSPUI.pdb
-C:\Users\kh\projects\my_github\DSP-tasks\DSPUI\obj\Debug\DSPUI.csproj.AssemblyReference.cache
