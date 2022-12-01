@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.Text;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -357,8 +357,6 @@ namespace DSPComponentsUnitTest
                    }, true);
 
             dc.Run();
-            Console.Write(dc.OutputNonNormalizedCorrelation);
-           
 
             Assert.IsTrue(UnitTestUtitlities.SignalsSamplesAreEqual(expectedOutput.Samples, dc.OutputNonNormalizedCorrelation));
 
@@ -535,7 +533,7 @@ namespace DSPComponentsUnitTest
                    }, false);
 
             dc.Run();
-            Console.Write(dc.OutputNormalizedCorrelation);
+
             Assert.IsTrue(UnitTestUtitlities.SignalsSamplesAreEqual(expectedOutput.Samples, dc.OutputNormalizedCorrelation));
 
         }
@@ -965,7 +963,7 @@ namespace DSPComponentsUnitTest
         }
 
 
-
+        /*
         [TestMethod]
         public void CrossFastNormalizedCorrelationTestMethod2()
         {
@@ -995,7 +993,7 @@ namespace DSPComponentsUnitTest
 
             Assert.IsTrue(UnitTestUtitlities.SignalsSamplesAreEqual(expectedOutput.Samples, fc.OutputNonNormalizedCorrelation));
         }
-
+        */
         #endregion
     }
 }
