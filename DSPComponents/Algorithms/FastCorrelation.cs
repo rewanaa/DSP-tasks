@@ -92,17 +92,17 @@ namespace DSPAlgorithms.Algorithms
             {
                 nonnormalized.Add(outt.Samples[k] / sig1.Samples.Count);
             }
-            for (int z = 0; z < InputSignal1.Samples.Count; z++)
+            for (int z = 0; z < sig1.Samples.Count; z++)
             {
-                Console.Write(InputSignal1.Samples[z] + " ");
-                x += ((InputSignal1.Samples[z]) * (InputSignal1.Samples[z]));
-                y += ((InputSignal2.Samples[z]) * (InputSignal2.Samples[z]));
+                Console.Write(sig1.Samples[z] + " ");
+                x += ((sig1.Samples[z]) * (sig1.Samples[z]));
+                y += ((sig2.Samples[z]) * (sig2.Samples[z]));
 
             }
             norm += x * y;
             for (int t = 0; t < sig1.Samples.Count; t++)
             {
-                normalized.Add(outt.Samples[t] / (((float)Math.Sqrt(norm)) / InputSignal1.Samples.Count));
+                normalized.Add(outt.Samples[t] / (((float)Math.Sqrt(norm)) / sig1.Samples.Count));
             }
             
             OutputNormalizedCorrelation = normalized;
