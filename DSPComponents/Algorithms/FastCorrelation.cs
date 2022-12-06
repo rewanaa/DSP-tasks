@@ -94,7 +94,6 @@ namespace DSPAlgorithms.Algorithms
             }
             for (int z = 0; z < sig1.Samples.Count; z++)
             {
-                Console.Write(sig1.Samples[z] + " ");
                 x += ((sig1.Samples[z]) * (sig1.Samples[z]));
                 y += ((sig2.Samples[z]) * (sig2.Samples[z]));
 
@@ -102,7 +101,7 @@ namespace DSPAlgorithms.Algorithms
             norm += x * y;
             for (int t = 0; t < sig1.Samples.Count; t++)
             {
-                normalized.Add(outt.Samples[t] / (((float)Math.Sqrt(norm)) / sig1.Samples.Count));
+                normalized.Add((outt.Samples[t] / (((float)Math.Sqrt(norm)) / sig1.Samples.Count))/sig1.Samples.Count);
             }
             
             OutputNormalizedCorrelation = normalized;
