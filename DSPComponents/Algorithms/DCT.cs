@@ -27,7 +27,8 @@ namespace DSPAlgorithms.Algorithms
                     //  Console.Write(r + " ");
 
                 }
-
+                //Console.Write(InputSignal.Samples.Count);
+                //Console.Write(r + " ");
 
                 Console.Write(((float)Math.Sqrt(2.0 / (float)InputSignal.Samples.Count)) * r + "  ");
                 dc.Add(((float)Math.Sqrt(2.0 / (float)InputSignal.Samples.Count)) * r);

@@ -31,11 +31,11 @@ namespace DSPAlgorithms.Algorithms
             float x = 0f;
             float y = 0f;
             float norm = 0f;
-
+           
             if (InputSignal2 == null)
             {
                 InputSignal2 = InputSignal1;
-
+                
             }
             if (InputSignal1.Samples.Count == InputSignal2.Samples.Count)
             {
@@ -88,23 +88,22 @@ namespace DSPAlgorithms.Algorithms
             idft.InputFreqDomainSignal = sig;
             idft.Run();
             Signal outt = idft.OutputTimeDomainSignal;
-            for (int k = 0; k < sig1.Samples.Count; k++)
+            for(int k=0;k< sig1.Samples.Count; k++)
             {
                 nonnormalized.Add(outt.Samples[k] / sig1.Samples.Count);
             }
-            for (int z = 0; z < InputSignal1.Samples.Count; z++)
+            for (int z = 0; z < sig1.Samples.Count; z++)
             {
-                Console.Write(InputSignal1.Samples[z] + " ");
-                x += ((InputSignal1.Samples[z]) * (InputSignal1.Samples[z]));
-                y += ((InputSignal2.Samples[z]) * (InputSignal2.Samples[z]));
+                x += ((sig1.Samples[z]) * (sig1.Samples[z]));
+                y += ((sig2.Samples[z]) * (sig2.Samples[z]));
 
             }
             norm += x * y;
             for (int t = 0; t < sig1.Samples.Count; t++)
             {
-                normalized.Add(outt.Samples[t] / (((float)Math.Sqrt(norm)) / InputSignal1.Samples.Count));
+                normalized.Add((outt.Samples[t] / (((float)Math.Sqrt(norm)) / sig1.Samples.Count))/sig1.Samples.Count);
             }
-
+            
             OutputNormalizedCorrelation = normalized;
             OutputNonNormalizedCorrelation = nonnormalized;
         }

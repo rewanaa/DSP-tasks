@@ -24,15 +24,15 @@ namespace DSPAlgorithms.Algorithms
         {
             float hd;
             float wn;
-            float N = 0.0f;
+            float N=0.0f;
             int j;
             List<float> h = new List<float>();
             List<float> w = new List<float>();
             List<float> result = new List<float>();
-            if (InputFilterType == FILTER_TYPES.LOW)
+            if (InputFilterType==FILTER_TYPES.LOW)
             {
                 InputCutOffFrequency = InputCutOffFrequency + (InputTransitionBand / 2);
-                for (int i = 0; i <= InputTimeDomainSignal.Samples.Count; i++)
+               for (int i=0;i <= InputTimeDomainSignal.Samples.Count; i++)
                 {
                     if (i == 0)
                     {
@@ -47,50 +47,50 @@ namespace DSPAlgorithms.Algorithms
                 }
 
             }
-            else if (InputFilterType == FILTER_TYPES.HIGH)
-            {
+           else if(InputFilterType == FILTER_TYPES.HIGH)
+           {
                 InputCutOffFrequency = InputCutOffFrequency - (InputTransitionBand / 2);
                 for (int i = 0; i <= InputTimeDomainSignal.Samples.Count; i++)
                 {
                     if (i == 0)
                     {
-                        hd = 1 - (2.0f * (float)InputCutOffFrequency);
+                        hd = 1-(2.0f * (float)InputCutOffFrequency);
                     }
                     else
                     {
-                        hd = (-1) * ((2.0f * (float)InputCutOffFrequency) * (((float)Math.Sin(i * (2 * (float)Math.PI * (float)InputCutOffFrequency)))
+                        hd = (-1)*((2.0f * (float)InputCutOffFrequency) * (((float)Math.Sin(i * (2 * (float)Math.PI * (float)InputCutOffFrequency)))
                             / (i * (2 * (float)Math.PI * (float)InputCutOffFrequency))));
                     }
                     h.Add(hd);
                 }
             }
-            else if (InputFilterType == FILTER_TYPES.BAND_PASS)
-            {
+           else if(InputFilterType == FILTER_TYPES.BAND_PASS)
+           {
                 InputF1 = InputF1 - (InputTransitionBand / 2);
                 InputF2 = InputF2 + (InputTransitionBand / 2);
                 for (int i = 0; i <= InputTimeDomainSignal.Samples.Count; i++)
                 {
                     if (i == 0)
                     {
-                        hd = 2 * ((float)InputF2 - (float)InputF1);
+                        hd = 2*((float)InputF2 - (float)InputF1);
                     }
                     else
                     {
-                        hd = (((2.0f * (float)InputF2) * (((float)Math.Sin(i * (2 * (float)Math.PI * (float)InputF2))) / (i * (2 * (float)Math.PI * (float)InputF2))))) -
+                        hd =  (((2.0f * (float)InputF2) * (((float)Math.Sin(i * (2 * (float)Math.PI * (float)InputF2))) / (i * (2 * (float)Math.PI * (float)InputF2)))))-
                            (-1) * ((2.0f * (float)InputF1) * (((float)Math.Sin(i * (2 * (float)Math.PI * (float)InputF1))) / (i * (2 * (float)Math.PI * (float)InputF1))));
                     }
                     h.Add(hd);
                 }
             }
-            else if (InputFilterType == FILTER_TYPES.BAND_STOP)
-            {
+           else if(InputFilterType==FILTER_TYPES.BAND_STOP)
+           {
                 InputF1 = InputF1 + (InputTransitionBand / 2);
                 InputF2 = InputF2 - (InputTransitionBand / 2);
                 for (int i = 0; i <= InputTimeDomainSignal.Samples.Count; i++)
                 {
                     if (i == 0)
                     {
-                        hd = 1 - (2 * ((float)InputF2 - (float)InputF1));
+                        hd =1-( 2 * ((float)InputF2 - (float)InputF1));
                     }
                     else
                     {
@@ -101,22 +101,22 @@ namespace DSPAlgorithms.Algorithms
                 }
             }
 
-            if (InputStopBandAttenuation <= 21)
+           if(InputStopBandAttenuation<=21)
             {
                 wn = 1;
-                N = (InputTransitionBand / InputFS) / 0.9f;
+                 N = (InputTransitionBand / InputFS) / 0.9f;
                 N = (int)Math.Ceiling(N);
                 if (N % 2 == 0)
                 {
                     N = N + 1;
                 }
-                j = (int)Math.Floor(N / 2);
+                 j = (int)Math.Floor(N / 2);
                 for (int i = 0; i <= j; i++)
                 {
                     w.Add(wn);
                 }
             }
-            else if (InputStopBandAttenuation > 21 && InputStopBandAttenuation <= 44)
+           else if(InputStopBandAttenuation>21&& InputStopBandAttenuation<=44)
             {
                 N = (InputTransitionBand / InputFS) / 3.1f;
                 N = (int)Math.Ceiling(N);
@@ -124,7 +124,7 @@ namespace DSPAlgorithms.Algorithms
                 {
                     N = N + 1;
                 }
-                j = (int)Math.Floor(N / 2);
+                 j = (int)Math.Floor(N/2);
                 for (int i = 0; i <= j; i++)
                 {
                     wn = 0.5f + (0.5f * (float)Math.Cos((2.0f * (float)Math.PI * i) / N));
@@ -140,7 +140,7 @@ namespace DSPAlgorithms.Algorithms
                 {
                     N = N + 1;
                 }
-                j = (int)Math.Floor(N / 2);
+                 j = (int)Math.Floor(N / 2);
                 for (int i = 0; i <= j; i++)
                 {
                     wn = 0.54f + (0.46f * (float)Math.Cos((2.0f * (float)Math.PI * i) / N));
@@ -155,20 +155,20 @@ namespace DSPAlgorithms.Algorithms
                 {
                     N = N + 1;
                 }
-                j = (int)Math.Floor(N / 2);
+                 j = (int)Math.Floor(N / 2);
                 for (int i = 0; i <= j; i++)
                 {
-                    wn = 0.42f + (0.5f * (float)Math.Cos((2.0f * (float)Math.PI * i) / (N - 1))) +
+                    wn = 0.42f + (0.5f * (float)Math.Cos((2.0f * (float)Math.PI * i) / (N-1)))+
                         (0.08f * (float)Math.Cos((4.0f * (float)Math.PI * i) / (N - 1)));
-                    w.Add(wn);
+                        w.Add(wn);
                 }
             }
-            j = (int)Math.Floor(N / 2);
+             j = (int)Math.Floor(N / 2);
             for (int i = 0; i <= j; i++)
             {
                 result[i] = h[i] * w[i];
             }
-            OutputHn = new Signal(result, false);
+             OutputHn = new Signal(result,false);
             DirectConvolution d = new DirectConvolution();
             d.InputSignal1 = new Signal(h, false);
             d.InputSignal2 = new Signal(w, false);
