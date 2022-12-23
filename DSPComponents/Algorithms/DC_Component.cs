@@ -17,7 +17,9 @@ namespace DSPAlgorithms.Algorithms
         public override void Run()
         {
             List<float> arr = new List<float>();
-            OutputSignal = new Signal(arr, false);
+            List<int> index = new List<int>();
+            OutputSignal = new Signal(arr, InputSignal.SamplesIndices, false);
+
             for (int i=0; i<InputSignal.Samples.Count; i++)
             {
                  mean = mean + InputSignal.Samples[i];
@@ -27,7 +29,9 @@ namespace DSPAlgorithms.Algorithms
             {
                 float sig = InputSignal.Samples[i] - mean;
                 OutputSignal.Samples.Add(sig);
+
             }
+
         }
     }
 }

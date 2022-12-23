@@ -18,6 +18,7 @@ namespace DSPAlgorithms.Algorithms
            
             List<float> PhaseShift = new List<float>();
             List<float> amplitude = new List<float>();
+            List<float> f = new List<float>();
 
             for (int k = 0; k < InputTimeDomainSignal.Samples.Count; k++)
             {
@@ -35,13 +36,14 @@ namespace DSPAlgorithms.Algorithms
 
                 amplitude.Add((float)Math.Sqrt((Math.Pow(real, 2)) + (Math.Pow(imagin, 2))));
                 PhaseShift.Add((float)Math.Atan2(imagin, real));
-                OutputFreqDomainSignal = new Signal(InputTimeDomainSignal.Samples, false);
-                OutputFreqDomainSignal = new Signal(amplitude, false);
-                OutputFreqDomainSignal = new Signal(PhaseShift, false);
-                OutputFreqDomainSignal.FrequenciesAmplitudes = amplitude;
-                OutputFreqDomainSignal.FrequenciesPhaseShifts = PhaseShift;
-
+                //OutputFreqDomainSignal = new Signal(amplitude, false);
+                //OutputFreqDomainSignal = new Signal(PhaseShift, false);
+                f.Add(InputSamplingFrequency*k);
             }
+            OutputFreqDomainSignal = new Signal(InputTimeDomainSignal.Samples, false);
+            OutputFreqDomainSignal.FrequenciesAmplitudes = amplitude;
+            OutputFreqDomainSignal.FrequenciesPhaseShifts = PhaseShift;
+            OutputFreqDomainSignal.Frequencies = f;
         }
 
     }

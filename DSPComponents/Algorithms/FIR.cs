@@ -10,38 +10,106 @@ namespace DSPAlgorithms.Algorithms
     public class FIR : Algorithm
     {
         public Signal InputTimeDomainSignal { get; set; }
-        public FILTER_TYPES InputFilterType { get; set; }
+        public FILTER_TYPES InputFilterType { get; set; }       //type of filter
         public float InputFS { get; set; }
-        public float? InputCutOffFrequency { get; set; }
-        public float? InputF1 { get; set; }
-        public float? InputF2 { get; set; }
+        public float? InputCutOffFrequency { get; set; }        //fc
+        public float? InputF1 { get; set; }                     //bandwidth filter
+        public float? InputF2 { get; set; }                     //bandwidth filter
         public float InputStopBandAttenuation { get; set; }
-        public float InputTransitionBand { get; set; }
+        public float InputTransitionBand { get; set; }          //to calculate the f' 
         public Signal OutputHn { get; set; }
         public Signal OutputYn { get; set; }
 
         public override void Run()
         {
-            float hd;
-            float wn;
-            float N=0.0f;
-            int j;
-            List<float> h = new List<float>();
-            List<float> w = new List<float>();
+       
+            //variables
+            double hd;
+            double wn;
+            double deltaf = 0;
+            int N =0;
+            List<double> h = new List<double>();
+            List<double> w = new List<double>();
             List<float> result = new List<float>();
+            List<int> index = new List<int>();
+
+            deltaf = InputTransitionBand / InputFS;
+
+//            Console.WriteLine("input : ");
+ //           Console.WriteLine("filter type " + InputFilterType);
+   //         Console.WriteLine("sampling freq " + InputFS);
+     //       Console.WriteLine("Fc " + InputCutOffFrequency);
+       //     Console.WriteLine("frequancy " + InputF1 + " to " + InputF2);
+         //   Console.WriteLine("StopBand att " + InputStopBandAttenuation);
+           // Console.WriteLine("InputTransitionBand "  + InputTransitionBand);
+           // Console.WriteLine();
+
+            //caclulate W(n)
+            if (InputStopBandAttenuation <= 21) { N = (int)Math.Ceiling(0.9 / deltaf); }
+            else if (InputStopBandAttenuation > 21 && InputStopBandAttenuation <= 44){  N = (int)Math.Ceiling(3.1 / deltaf);}
+            else if (InputStopBandAttenuation > 44 && InputStopBandAttenuation <= 53){N = (int)Math.Ceiling(3.3f / deltaf);}
+            else{ N = (int)Math.Ceiling(5.5f / deltaf);}
+
+            if (N % 2 == 0)
+            {
+                N = N + 1;
+            }
+            int  itr = (int)Math.Ceiling((float)N / 2);
+            if (InputStopBandAttenuation <= 21)
+            {
+                for (int i = 0; i <itr; i++) 
+                {
+                    w.Add(1);
+                }
+
+            }
+            else if (InputStopBandAttenuation > 21 && InputStopBandAttenuation <= 44)
+            {
+                double x = N;
+                //create W(n)
+                for (int i = 0; i <itr; i++) 
+                {
+                    wn = 0.5f + (0.5f * (double)Math.Cos((2.0f * (double)Math.PI * i) / N));
+                    w.Add(wn);
+                }
+
+            }
+            else if (InputStopBandAttenuation > 44 && InputStopBandAttenuation <= 53)
+            {
+                for (int i = 0; i < itr; i++) 
+                {
+                    wn = 0.54 + (0.46 * Math.Cos((2.0f *Math.PI * i) / N));
+                    w.Add(wn);
+                }
+            }
+            else
+            {
+                for (int i = 0; i <itr; i++) 
+                {
+                    wn = 0.42 + (0.5 * Math.Cos((2.0f * Math.PI * i) / (N - 1))) +
+                        (0.08f * Math.Cos((4.0f * Math.PI * i) / (N - 1)));
+                    w.Add(wn);
+                }
+            }
+            deltaf = InputTransitionBand;//reset it to original value
+           // Console.WriteLine("deltaf = " + deltaf);
+            //Console.WriteLine("N value " + N);
+           // Console.WriteLine("W(n) size: " + w.Count);
+            
+            //Calculate hd(n)
             if (InputFilterType==FILTER_TYPES.LOW)
             {
-                InputCutOffFrequency = InputCutOffFrequency + (InputTransitionBand / 2);
-               for (int i=0;i <= InputTimeDomainSignal.Samples.Count; i++)
+                double Fc = ((double)InputCutOffFrequency + (InputTransitionBand / 2)) / InputFS;
+                for (int i = 0; i < itr; i++)
                 {
                     if (i == 0)
                     {
-                        hd = 2.0f * (float)InputCutOffFrequency;
+                        hd = 2.0f * Fc;
                     }
                     else
                     {
-                        hd = ((2.0f * (float)InputCutOffFrequency) * (((float)Math.Sin(i * (2 * (float)Math.PI * (float)InputCutOffFrequency)))
-                            / (i * (2 * (float)Math.PI * (float)InputCutOffFrequency))));
+                        hd = ((2.0f * Fc) * ((Math.Sin(i * (2 * Math.PI * Fc)))
+                            / (i * (2 *Math.PI * Fc))));
                     }
                     h.Add(hd);
                 }
@@ -49,131 +117,84 @@ namespace DSPAlgorithms.Algorithms
             }
            else if(InputFilterType == FILTER_TYPES.HIGH)
            {
-                InputCutOffFrequency = InputCutOffFrequency - (InputTransitionBand / 2);
-                for (int i = 0; i <= InputTimeDomainSignal.Samples.Count; i++)
+                double Fc = ((double)InputCutOffFrequency - deltaf / 2) / InputFS;
+                for (int i = 0; i < itr; i++)
                 {
                     if (i == 0)
                     {
-                        hd = 1-(2.0f * (float)InputCutOffFrequency);
+                        hd = 1-(2.0f * Fc);
                     }
                     else
                     {
-                        hd = (-1)*((2.0f * (float)InputCutOffFrequency) * (((float)Math.Sin(i * (2 * (float)Math.PI * (float)InputCutOffFrequency)))
-                            / (i * (2 * (float)Math.PI * (float)InputCutOffFrequency))));
+                        hd = (-1)*((2.0f * Fc) * ((Math.Sin(i * (2 * Math.PI * Fc)))
+                            / (i * (2 * Math.PI * Fc))));
                     }
                     h.Add(hd);
                 }
             }
            else if(InputFilterType == FILTER_TYPES.BAND_PASS)
            {
-                InputF1 = InputF1 - (InputTransitionBand / 2);
-                InputF2 = InputF2 + (InputTransitionBand / 2);
-                for (int i = 0; i <= InputTimeDomainSignal.Samples.Count; i++)
+                
+                double F1 = ((double)InputF1 - (InputTransitionBand / 2)) / InputFS;
+                double F2 = ((double)InputF2 + (InputTransitionBand / 2)) / InputFS;
+                for (int i = 0; i <itr; i++)
                 {
                     if (i == 0)
                     {
-                        hd = 2*((float)InputF2 - (float)InputF1);
+                        hd = 2*(F2 - F1);
                     }
                     else
                     {
-                        hd =  (((2.0f * (float)InputF2) * (((float)Math.Sin(i * (2 * (float)Math.PI * (float)InputF2))) / (i * (2 * (float)Math.PI * (float)InputF2)))))-
-                           (-1) * ((2.0f * (float)InputF1) * (((float)Math.Sin(i * (2 * (float)Math.PI * (float)InputF1))) / (i * (2 * (float)Math.PI * (float)InputF1))));
+                        hd =  (((2 * F2) * (Math.Sin(i * (2 * Math.PI * F2)) / (i * (2 *Math.PI * F2))))) - ((2 * F1) * ((Math.Sin(i * (2 * Math.PI * F1))) / (i * (2 * Math.PI * F1))));
                     }
                     h.Add(hd);
                 }
             }
            else if(InputFilterType==FILTER_TYPES.BAND_STOP)
            {
-                InputF1 = InputF1 + (InputTransitionBand / 2);
-                InputF2 = InputF2 - (InputTransitionBand / 2);
-                for (int i = 0; i <= InputTimeDomainSignal.Samples.Count; i++)
+                double F1 = ((double)InputF1 + (InputTransitionBand / 2)) / InputFS;
+                double F2 = ((double)InputF2 - (InputTransitionBand / 2)) / InputFS;
+                for (int i = 0; i < itr; i++)
                 {
                     if (i == 0)
                     {
-                        hd =1-( 2 * ((float)InputF2 - (float)InputF1));
+                        hd =1-( 2 * (F2 - F1));
                     }
                     else
                     {
-                        hd = (((2.0f * (float)InputF1) * (((float)Math.Sin(i * (2 * (float)Math.PI * (float)InputF1))) / (i * (2 * (float)Math.PI * (float)InputF1))))) -
-                           (-1) * ((2.0f * (float)InputF2) * (((float)Math.Sin(i * (2 * (float)Math.PI * (float)InputF2))) / (i * (2 * (float)Math.PI * (float)InputF2))));
+                        hd = (((2 * F1) * ((Math.Sin(i * (2 * Math.PI * F1))) / (i * (2 * Math.PI * F1)))))-
+                            ((2 * F2) * ((Math.Sin(i * (2 * Math.PI * F2))) / (i * (2 * Math.PI * F2))));
                     }
                     h.Add(hd);
                 }
             }
+           // Console.WriteLine("h(n) size " + h.Count);
 
-           if(InputStopBandAttenuation<=21)
-            {
-                wn = 1;
-                 N = (InputTransitionBand / InputFS) / 0.9f;
-                N = (int)Math.Ceiling(N);
-                if (N % 2 == 0)
-                {
-                    N = N + 1;
-                }
-                 j = (int)Math.Floor(N / 2);
-                for (int i = 0; i <= j; i++)
-                {
-                    w.Add(wn);
-                }
-            }
-           else if(InputStopBandAttenuation>21&& InputStopBandAttenuation<=44)
-            {
-                N = (InputTransitionBand / InputFS) / 3.1f;
-                N = (int)Math.Ceiling(N);
-                if (N % 2 == 0)
-                {
-                    N = N + 1;
-                }
-                 j = (int)Math.Floor(N/2);
-                for (int i = 0; i <= j; i++)
-                {
-                    wn = 0.5f + (0.5f * (float)Math.Cos((2.0f * (float)Math.PI * i) / N));
-                    w.Add(wn);
-                }
 
+            //the h(n) = W(n) * hd(n) but the n here start from 0 to N/2
+            //fill first from the end to 0 "without zero" 
+            for (int i = w.Count - 1; i >= 0; i--) {
+               // Console.WriteLine(-(i) + " h " + h[i] + "       w " + w[i]);
+                result.Add((float)(h[i] * w[i]));
+                index.Add(-i);
             }
-            else if (InputStopBandAttenuation > 44 && InputStopBandAttenuation <= 53)
+            //fill from 0 to the end "with 0"
+            for (int i = 1; i <  w.Count; i++)
             {
-                N = (InputTransitionBand / InputFS) / 3.3f;
-                N = (int)Math.Ceiling(N);
-                if (N % 2 == 0)
-                {
-                    N = N + 1;
-                }
-                 j = (int)Math.Floor(N / 2);
-                for (int i = 0; i <= j; i++)
-                {
-                    wn = 0.54f + (0.46f * (float)Math.Cos((2.0f * (float)Math.PI * i) / N));
-                    w.Add(wn);
-                }
+               // Console.WriteLine((i) + " h  " + h[i] + "       w  " + w[i]);
+                result.Add((float)(h[i] * w[i]));
+                index.Add(i);
             }
-            else if (InputStopBandAttenuation > 53 && InputStopBandAttenuation <= 74)
-            {
-                N = (InputTransitionBand / InputFS) / 5.5f;
-                N = (int)Math.Ceiling(N);
-                if (N % 2 == 0)
-                {
-                    N = N + 1;
-                }
-                 j = (int)Math.Floor(N / 2);
-                for (int i = 0; i <= j; i++)
-                {
-                    wn = 0.42f + (0.5f * (float)Math.Cos((2.0f * (float)Math.PI * i) / (N-1)))+
-                        (0.08f * (float)Math.Cos((4.0f * (float)Math.PI * i) / (N - 1)));
-                        w.Add(wn);
-                }
-            }
-             j = (int)Math.Floor(N / 2);
-            for (int i = 0; i <= j; i++)
-            {
-                result[i] = h[i] * w[i];
-            }
-             OutputHn = new Signal(result,false);
+            //Console.WriteLine(" h.count" + h.Count + " w.count" + w.Count + " res.count" + result.Count);
+             
+            //set output
+            OutputHn = new Signal(result,index,false);
             DirectConvolution d = new DirectConvolution();
-            d.InputSignal1 = new Signal(h, false);
-            d.InputSignal2 = new Signal(w, false);
+            d.InputSignal1 = InputTimeDomainSignal;
+            d.InputSignal2 = OutputHn;
             d.Run();
             OutputYn = d.OutputConvolvedSignal;
+            
         }
     }
 }

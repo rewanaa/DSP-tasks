@@ -17,7 +17,7 @@ namespace DSPAlgorithms.Algorithms
         public override void Run()
         {
             List<float> arr = new List<float>();
-            OutputNormalizedSignal = new Signal(arr, false);
+            OutputNormalizedSignal = new Signal(arr, InputSignal.SamplesIndices, false);
             //float Input = Convert.ToSingle(InputSignal);
             for (int i = 0; i < InputSignal.Samples.Count; i++)
             {

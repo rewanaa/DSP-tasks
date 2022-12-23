@@ -29,6 +29,12 @@ namespace DSPComponentsUnitTest
             FIR.InputTimeDomainSignal = sig1;
 
             FIR.Run();
+            Console.WriteLine("Expected Size" + expectedCoefficients.Samples.Count + " Output Size " + FIR.OutputHn.Samples.Count);
+            int n;
+            for (int i = 0; i < expectedCoefficients.Samples.Count; i++)
+            {
+                Console.WriteLine(i + " " + (expectedCoefficients.Samples[i] - FIR.OutputHn.Samples[i]));
+            }
 
             Assert.IsTrue(UnitTestUtitlities.SignalsSamplesIndicesAreEqual(expectedCoefficients, FIR.OutputHn));
         }
@@ -75,7 +81,13 @@ namespace DSPComponentsUnitTest
             FIR.InputTimeDomainSignal = sig1;
 
             FIR.Run();
-
+            Console.WriteLine("Expected Size" + expectedCoefficients.Samples.Count + " Output Size " + FIR.OutputHn.Samples.Count);
+/*            int n;
+            for (int i = 0; i < expectedCoefficients.Samples.Count; i++)
+            {
+                n = i - expectedCoefficients.Samples.Count / 2;
+                Console.WriteLine(n + " " + (expectedCoefficients.Samples[i] - FIR.OutputHn.Samples[i]));
+            }*/
             Assert.IsTrue(UnitTestUtitlities.SignalsSamplesIndicesAreEqual(expectedCoefficients, FIR.OutputHn));
         }
 
@@ -119,7 +131,12 @@ namespace DSPComponentsUnitTest
             FIR.InputTimeDomainSignal = sig1;
 
             FIR.Run();
-
+            Console.WriteLine("Expected Size" + expectedCoefficients.Samples.Count + " Output Size " + FIR.OutputHn.Samples.Count);
+/*            int n;
+            for (int i = 0; i < expectedCoefficients.Samples.Count; i++)
+            {
+                Console.WriteLine(FIR.OutputHn.SamplesIndices[i] + "         " + (expectedCoefficients.Samples[i] - FIR.OutputHn.Samples[i]));
+            }*/
             Assert.IsTrue(UnitTestUtitlities.SignalsSamplesIndicesAreEqual(expectedCoefficients, FIR.OutputHn));
         }
 
@@ -165,7 +182,13 @@ namespace DSPComponentsUnitTest
             FIR.InputTimeDomainSignal = sig1;
 
             FIR.Run();
-
+            Console.WriteLine("Expected Size" + expectedCoefficients.Samples.Count + " Output Size " + FIR.OutputHn.Samples.Count);
+/*            int n;
+            for (int i = 0; i < expectedCoefficients.Samples.Count; i++)
+            {
+                n = i - expectedCoefficients.Samples.Count / 2;
+                Console.WriteLine(n + " " + (expectedCoefficients.Samples[i] - FIR.OutputHn.Samples[i]));
+            }*/
             Assert.IsTrue(UnitTestUtitlities.SignalsSamplesIndicesAreEqual(expectedCoefficients, FIR.OutputHn));
         }
 
