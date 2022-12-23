@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DSPAlgorithms.Algorithms
 {
-    public class DCT: Algorithm
+    public class DCT : Algorithm
     {
         public Signal InputSignal { get; set; }
         public Signal OutputSignal { get; set; }
@@ -16,17 +16,24 @@ namespace DSPAlgorithms.Algorithms
         {
             List<float> dc = new List<float>();
             float r = 0f;
-            for (int k = 0; k <= InputSignal.Samples.Count; k++)
+
+            for (int k = 0; k < InputSignal.Samples.Count; k++)
             {
-                for (int n = 1; n < InputSignal.Samples.Count; n++)
+                r = 0;
+                for (int n = 0; n < InputSignal.Samples.Count; n++)
                 {
-                    r += InputSignal.Samples[n] * ((float)Math.Cos(((float)Math.PI / (4.0 * InputSignal.Samples.Count)) * ((2 * n) - 1) * ((2 *k) - 1)));
+
+                    r += InputSignal.Samples[n] * ((float)Math.Cos(((float)Math.PI / (4.0 * InputSignal.Samples.Count)) * ((2 * n) - 1) * ((2 * k) - 1)));
+                    //  Console.Write(r + " ");
+
                 }
+
+
                 Console.Write(((float)Math.Sqrt(2.0 / (float)InputSignal.Samples.Count)) * r + "  ");
                 dc.Add(((float)Math.Sqrt(2.0 / (float)InputSignal.Samples.Count)) * r);
-                r = 0;
             }
             OutputSignal = new Signal(dc, false);
+
         }
     }
 }
